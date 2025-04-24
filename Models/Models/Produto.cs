@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Models.Models
 {
@@ -17,6 +19,7 @@ namespace Models.Models
         public string Descricao { get; set; }
         [Required(ErrorMessage = "O preço é obrigatório")]
         [Range(0.01, double.MaxValue, ErrorMessage = "O preço deve ser maior que zero")]
+        [Precision(18, 2)]
         public decimal Preco { get; set; }
         public string Categoria { get; set; }
         public int Quantidade { get; set; } = 0;

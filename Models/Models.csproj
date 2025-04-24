@@ -5,6 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>  <!-- Você pode alterar para net7.0, se preferir -->
     <OutputType>Library</OutputType>  <!-- Como é um projeto de biblioteca, definimos Library -->
     <RootNamespace>Model</RootNamespace> <!-- Definindo o namespace raiz -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <!-- Adicionando os pacotes NuGet que você vai utilizar -->

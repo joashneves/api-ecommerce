@@ -24,5 +24,13 @@ namespace api_ecommerce.Services
         {
             return await _context.ProdutoSet.FirstOrDefaultAsync(p => p.Id == id); // Obtém o produto pelo ID
         }
+        // Método para adicionar um novo produto
+        public async Task<Produto> PostProdutoAsync(Produto produto)
+        {
+            _context.ProdutoSet.Add(produto); // Adiciona o novo produto ao DbSet
+            await _context.SaveChangesAsync(); // Salva as mudanças no banco
+            return produto; // Retorna o produto criado
+        }
+
     }
 }

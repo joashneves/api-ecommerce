@@ -28,10 +28,8 @@ namespace Infra
             {
                 // Se não encontrar a variável de ambiente, use uma string de conexão padrão
                 connectionString = _configuration.GetConnectionString("SQLData"); // A configuração do appsettings.json
+                Console.WriteLine("connectionString: " + connectionString);
             }
-
-            Console.WriteLine("connectionString: " + connectionString);
-
             // Usando SQL Server (substitua a string de conexão conforme necessário)
             optionsBuilder.UseSqlServer(connectionString);
         }

@@ -1,5 +1,8 @@
-﻿using Asp.Versioning;
+﻿using api_ecommerce.Services;
+using Asp.Versioning;
+using Infra;
 using Microsoft.AspNetCore.Mvc;
+using Models.Models;
 
 namespace api_ecommerce.controller.v1
 {
@@ -8,10 +11,28 @@ namespace api_ecommerce.controller.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ProdutoController : Controller
     {
-        [HttpGet]
-        public IActionResult Index()
+        private readonly ProdutoService _produtoContext;
+
+        public ProdutoController(ProdutoService contextService)
         {
-            return Ok("Topper");
+            _produtoContext = contextService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var result = await _produtoContext.GetProdutosAsync();
+            return Ok(result);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]Produto produto){
+                if (produto == null)
+    {
+        return BadRequest("Produto inválido.");
+    }
+
+            var result = await _produtoContext.PostProdutoAsync(produto);
+            return Created($"api/v1/Produto/{result.Id}", result); // ou apenas: return Ok(result);
         }
     }
 }
