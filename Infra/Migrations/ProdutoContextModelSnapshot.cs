@@ -31,6 +31,9 @@ namespace Infra.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<string>("CaminhoArquivo")
+                        .HasColumnType("text");
+
                     b.Property<string>("Categoria")
                         .HasColumnType("text")
                         .HasColumnName("categoria");

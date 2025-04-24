@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +23,8 @@ namespace Infra.Migrations
                     descricao = table.Column<string>(type: "text", nullable: false),
                     preco = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     categoria = table.Column<string>(type: "text", nullable: true),
-                    quantidade = table.Column<int>(type: "integer", nullable: false)
+                    quantidade = table.Column<int>(type: "integer", nullable: false),
+                    CaminhoArquivo = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

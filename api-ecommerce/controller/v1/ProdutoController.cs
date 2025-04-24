@@ -2,6 +2,7 @@
 using Asp.Versioning;
 using Infra;
 using Microsoft.AspNetCore.Mvc;
+using Model.ViewModel;
 using Models.Models;
 
 namespace api_ecommerce.controller.v1
@@ -11,28 +12,35 @@ namespace api_ecommerce.controller.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ProdutoController : Controller
     {
-        private readonly ProdutoService _produtoContext;
+        private readonly ProdutoService _produtoService;
 
         public ProdutoController(ProdutoService contextService)
         {
-            _produtoContext = contextService;
+            _produtoService = contextService;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var result = await _produtoContext.GetProdutosAsync();
+            var result = await _produtoService.GetProdutosAsync();
             return Ok(result);
 
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Produto produto){
-                if (produto == null)
-    {
-        return BadRequest("Produto inválido.");
-    }
-
-            var result = await _produtoContext.PostProdutoAsync(produto);
-            return Created($"api/v1/Produto/{result.Id}", result); // ou apenas: return Ok(result);
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Post([FromForm]ProdutoViewModel produto){
+            try
+            {
+                var result = await _produtoService.PostProdutoAsync(produto);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensagem = "Erro interno ao salvar produto", erro = ex.Message });
+            }
         }
     }
 }

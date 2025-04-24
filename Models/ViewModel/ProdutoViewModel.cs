@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace Models.Models
+namespace Model.ViewModel
 {
-    public class Produto
+    public class ProdutoViewModel
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "A descrição é obrigatória")]
@@ -23,7 +22,7 @@ namespace Models.Models
         public string Categoria { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "A quantidade deve ser maior ou igual a zero")]
         public int Quantidade { get; set; } = 0;
-        public string CaminhoArquivo { get; set; }
+        public IFormFile Arquivo { get; set; }
 
     }
 }

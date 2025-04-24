@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ProdutoContext))]
-    [Migration("20250424123213_Init")]
-    partial class Init
+    [Migration("20250424221507_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace Infra.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("CaminhoArquivo")
+                        .HasColumnType("text");
 
                     b.Property<string>("Categoria")
                         .HasColumnType("text")

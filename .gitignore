@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 #personalizado
 .env
+api-ecommerce/Storage/*
 
 # User-specific files
 *.rsuser
