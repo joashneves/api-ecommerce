@@ -18,12 +18,6 @@ namespace api_ecommerce.Services
         {
             return await _context.ProdutoSet.ToListAsync(); // Obtém todos os produtos
         }
-
-        // Método para obter um produto específico pelo ID
-        public async Task<Produto> GetProdutoByIdAsync(string id)
-        {
-            return await _context.ProdutoSet.FirstOrDefaultAsync(p => p.Id == id); // Obtém o produto pelo ID
-        }
         // Método para adicionar um novo produto
         public async Task<Produto> PostProdutoAsync(Produto produto)
         {

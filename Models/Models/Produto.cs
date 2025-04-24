@@ -11,8 +11,7 @@ namespace Models.Models
 {
     public class Produto
     {
-        [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "A descrição é obrigatória")]

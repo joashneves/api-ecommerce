@@ -26,8 +26,8 @@
 
   <!-- Incluir suas classes e arquivos do projeto Infra -->
   <ItemGroup>
-    <Compile Include="Migrations\20250424060451_InitialCreate.cs" />
-    <Compile Include="Migrations\20250424060451_InitialCreate.Designer.cs" />
+    <Compile Include="Migrations\20250424123213_Init.cs" />
+    <Compile Include="Migrations\20250424123213_Init.Designer.cs" />
     <Compile Include="Migrations\ProdutoContextModelSnapshot.cs" />
     <Compile Include="ProdutoContext.cs" />  <!-- Sua classe ProdutoContext -->
     <!-- Inclua outras classes de repositório ou contexto, se necessário -->

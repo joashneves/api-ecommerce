@@ -35,18 +35,24 @@ namespace Infra
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
         {
+            modelBuilder.HasPostgresExtension("pgcrypto");
 
             modelBuilder.Entity<Produto>(entity =>
             {
+                entity.ToTable("Produto");
+
+                entity.HasKey(p => p.Id);
+
                 entity.Property(p => p.Id)
-                .HasColumnName("id")
-                .HasColumnType("varchar") // ou "text", dependendo do seu banco
-                .IsRequired();
+                    .HasColumnName("id")
+                    .HasColumnType("uuid")
+                    .HasDefaultValueSql("gen_random_uuid()"); // Requer extensão pgcrypto ou uuid-ossp
 
-
-                entity.Property(p => p.Nome)
-
-                .HasColumnName("Nome");
+                entity.Property(p => p.Nome).HasColumnName("nome");
+                entity.Property(p => p.Descricao).HasColumnName("descricao");
+                entity.Property(p => p.Preco).HasColumnName("preco");
+                entity.Property(p => p.Categoria).HasColumnName("categoria");
+                entity.Property(p => p.Quantidade).HasColumnName("quantidade");
 
             });
 

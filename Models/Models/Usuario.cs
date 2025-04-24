@@ -10,8 +10,7 @@ namespace Models.Models
 {
     public class Usuario
     {
-        [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome_completo { get; set; }
         [Required(ErrorMessage = "O nome é obrigatório")]
