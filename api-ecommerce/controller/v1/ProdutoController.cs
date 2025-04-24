@@ -42,5 +42,27 @@ namespace api_ecommerce.controller.v1
                 return StatusCode(500, new { mensagem = "Erro interno ao salvar produto", erro = ex.Message });
             }
         }
+        [HttpGet("download/{fileName}")]
+        public async Task<IActionResult> Download(string fileName)
+        {
+            try
+            {
+                var (fileBytes, mimeType, downloadName) = await _produtoService.DownloadImageByPath(fileName);
+                return File(fileBytes, mimeType, downloadName);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { mensagem = ex.Message });
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(new { mensagem = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensagem = "Erro interno ao realizar o download.", erro = ex.Message });
+            }
+        }
+
     }
 }

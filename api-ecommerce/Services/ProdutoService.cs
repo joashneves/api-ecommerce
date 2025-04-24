@@ -22,52 +22,89 @@ namespace api_ecommerce.Services
             return await _context.ProdutoSet.ToListAsync(); // Obtém todos os produtos
         }
         // Método para adicionar um novo produto
-        public async Task<Produto> PostProdutoAsync([FromForm]ProdutoViewModel produto)
+        public async Task<Produto> PostProdutoAsync([FromForm] ProdutoViewModel produto)
         {
-                var permittedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                var ext = Path.GetExtension(produto.Arquivo.FileName).ToLowerInvariant();
-                if (!permittedExtensions.Contains(ext))
-                {
-                    throw new ArgumentException("Formato de imagem não permitido.");
-                }
+            var permittedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var ext = Path.GetExtension(produto.Arquivo.FileName).ToLowerInvariant();
+            if (!permittedExtensions.Contains(ext))
+            {
+                throw new ArgumentException("Formato de imagem não permitido.");
+            }
 
 
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(produto.Arquivo.FileName);
-                var fileName = fileNameWithoutExtension;
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(produto.Arquivo.FileName);
+            var fileName = fileNameWithoutExtension;
 
             string produtoDir = Path.Combine("Storage", "Produtos");
 
             if (Directory.Exists(produtoDir) == false)
-                {
-                    Directory.CreateDirectory(produtoDir);
-                    
-                }
-                var filePath = Path.Combine(produtoDir, produto.Arquivo.FileName);
-            System.Console.WriteLine(filePath);
-                int count = 1;
-                while (System.IO.File.Exists(filePath))
-                {
-                    System.Console.WriteLine("Arquivo ja existe");
-                    fileName = $"{fileNameWithoutExtension}_{count++}{ext}";
-                    filePath = Path.Combine(produtoDir, fileName);
-                }
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await produto.Arquivo.CopyToAsync(fileStream);
-                }
-                var Novoproduto = new Produto
-                {
-                    Nome = produto.Nome,
-                    Descricao = produto.Descricao,
-                    Preco = produto.Preco,
-                    Categoria = produto.Categoria,
-                    Quantidade = produto.Quantidade,
-                    CaminhoArquivo = filePath
-                };
-                _context.ProdutoSet.Add(Novoproduto); // Adiciona o novo produto ao DbSet
-                await _context.SaveChangesAsync(); // Salva as mudanças no banco
-                return Novoproduto; // Retorna o produto criado
+            {
+                Directory.CreateDirectory(produtoDir);
+
+            }
+            var filePath = Path.Combine(produtoDir, produto.Arquivo.FileName);
+            Console.WriteLine(filePath);
+            int count = 1;
+            while (System.IO.File.Exists(filePath))
+            {
+                System.Console.WriteLine("Arquivo ja existe");
+                fileName = $"{fileNameWithoutExtension}_{count++}{ext}";
+                filePath = Path.Combine(produtoDir, fileName);
+            }
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await produto.Arquivo.CopyToAsync(fileStream);
+            }
+            var Novoproduto = new Produto
+            {
+                Nome = produto.Nome,
+                Descricao = produto.Descricao,
+                Preco = produto.Preco,
+                Categoria = produto.Categoria,
+                Quantidade = produto.Quantidade,
+                CaminhoArquivo = filePath
+            };
+            _context.ProdutoSet.Add(Novoproduto); // Adiciona o novo produto ao DbSet
+            await _context.SaveChangesAsync(); // Salva as mudanças no banco
+            return Novoproduto; // Retorna o produto criado
         }
 
+        public async Task<(byte[] fileBytes, string mimeType, string fileName)> DownloadImageByPath(string path)
+        {
+            //System.Console.WriteLine(path); Storage\\Produtos\\Produto1.jpg é o caminho, ja que o path pega só o arquivo
+            string fullPath = Path.Combine("Storage", "Produtos", path);
+            var produto = await _context.ProdutoSet.FirstOrDefaultAsync(p => p.CaminhoArquivo == fullPath);
+            if (produto == null)
+            {
+                throw new ArgumentException("Produto não encontrado.");
+            }
+            // Lê o arquivo em bytes
+            byte[] fileBytes = await File.ReadAllBytesAsync(fullPath);
+
+            if (!File.Exists(fullPath))
+            {
+                throw new FileNotFoundException("Arquivo não encontrado.");
+            }
+
+
+            // Determina o tipo MIME do arquivo com base na extensão
+            var mimeType = GetMimeType(fullPath);
+
+            // Retorna o arquivo para download
+            return (fileBytes, mimeType, Path.GetFileName(fullPath));
+
+        }
+        // Método auxiliar para determinar o tipo MIME com base na extensão do arquivo
+        private string GetMimeType(string filePath)
+        {
+            var ext = Path.GetExtension(filePath).ToLowerInvariant();
+            return ext switch
+            {
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                _ => "application/octet-stream", // Default para arquivos não reconhecidos
+            };
+        }
     }
 }
