@@ -29,7 +29,11 @@
     <Compile Include="Migrations\20250424221507_InitialMigration.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.Designer.cs" />
     <Compile Include="Migrations\ProdutoContextModelSnapshot.cs" />
-    <Compile Include="ProdutoContext.cs" />  <!-- Sua classe ProdutoContext -->
+    <Compile Include="Migrations\User\20250424235150_userContext.cs" />
+    <Compile Include="Migrations\User\20250424235150_userContext.Designer.cs" />
+    <Compile Include="Migrations\User\UserContextModelSnapshot.cs" />
+    <Compile Include="ProdutoContext.cs" />
+    <Compile Include="UserContext.cs" />  <!-- Sua classe ProdutoContext -->
     <!-- Inclua outras classes de repositório ou contexto, se necessário -->
   </ItemGroup>
   <ItemGroup>

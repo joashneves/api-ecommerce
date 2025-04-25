@@ -22,7 +22,7 @@ namespace Infra
         {
             // Comentado o código de teste para exibir a string de conexão no console.
             // Utilizando SQL Server, substitua a string de conexão conforme necessário.
-            string? connectionString = Environment.GetEnvironmentVariable("SQLData");
+            string connectionString = Environment.GetEnvironmentVariable("SQLData");
             if (string.IsNullOrEmpty(connectionString))
             {
                 // Fallback (evita erro se a variável não estiver setada)

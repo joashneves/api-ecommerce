@@ -1,5 +1,9 @@
-﻿using Asp.Versioning;
+﻿using System.Threading.Tasks;
+using api_ecommerce.Services;
+using Asp.Versioning;
+using Infra;
 using Microsoft.AspNetCore.Mvc;
+using Models.Models;
 
 namespace api_ecommerce.controller.v1
 {
@@ -8,10 +12,28 @@ namespace api_ecommerce.controller.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class UserController : Controller
     {
+        private readonly UserService _userService;
+        public UserController(UserService contextService) {
+            _userService = contextService;
+        }
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Ok("User's");
+            var result = await _userService.GetUsuariosAsync();
+            return Ok(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Usuario usuario)
+        {
+            try
+            {
+                var result = await _userService.PostUsuarioAsync(usuario);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

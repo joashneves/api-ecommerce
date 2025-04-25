@@ -1,0 +1,36 @@
+﻿using Microsoft.IdentityModel.Tokens;
+using static System.Net.Mime.MediaTypeNames;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Models.Models;
+
+namespace api_ecommerce.Services
+{
+    public class TokenGeneration
+    {
+        public static object GenerateToken(Usuario conta)
+        {
+            var secretKey = Environment.GetEnvironmentVariable("SECRET_KEY"); // Obtém a chave do .env
+            var key = Encoding.ASCII.GetBytes(secretKey);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                new Claim(ClaimTypes.Name, conta.Nome_usuario),
+                new Claim(ClaimTypes.Email, conta.Email),
+                    
+            }),
+                Expires = DateTime.UtcNow.AddHours(2), // O token vai expirar em 2 horas
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return new { token = tokenString };
+
+        }
+    }
+}
