@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Infra;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,15 @@ namespace api_ecommerce.Services
         }
 
         // Método para obter todos os produtos
-        public async Task<List<Produto>> GetProdutosAsync()
+        public async Task<List<Produto>> GetProdutosAsync(int pagina = 0, int quantidade = 10)
         {
             return await _context.ProdutoSet
-                .Include(p => p.Imagens) // Inclui as imagens associadas ao produto
-                .Where(p => p.DeletedAt == null) // Opcional: Filtra produtos onde DeletedAt é null, se desejar
-                .ToListAsync();
+                .Include(p => p.Imagens)
+                .Where(p => p.DeletedAt == null)
+                .Skip(pagina).Take(quantidade)
+                .AsQueryable().ToListAsync();
         }
+
         // Método para adicionar um novo produto
         public async Task<Produto> PostProdutoAsync([FromForm] ProdutoViewModel produto)
         {

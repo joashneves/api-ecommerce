@@ -19,12 +19,12 @@ namespace api_ecommerce.controller.v1
             _produtoService = contextService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int pagina = 0, [FromQuery] int quantidade = 10)
         {
-            var result = await _produtoService.GetProdutosAsync();
+            var result = await _produtoService.GetProdutosAsync(pagina, quantidade);
             return Ok(result);
-
         }
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Post([FromForm]ProdutoViewModel produto){
