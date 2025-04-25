@@ -22,7 +22,7 @@ namespace Model.ViewModel
         public string Categoria { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "A quantidade deve ser maior ou igual a zero")]
         public int Quantidade { get; set; } = 0;
-        public IFormFile Arquivo { get; set; }
+        public List<IFormFile> Imagens { get; set; }
 
     }
 }

@@ -18,8 +18,10 @@
   <!-- Aqui você adiciona as entidades ou modelos que fazem parte deste projeto -->
   <ItemGroup>
     <Compile Include="DTO\LoginDTO.cs" />
+    <Compile Include="DTO\ProdutosDTO.cs" />
     <Compile Include="Models\Usuario.cs" />  <!-- Exemplo: sua classe de usuário -->
     <Compile Include="Models\Produto.cs" />
+    <Compile Include="Models\ImagemProduto.cs" />
     <Compile Include="ViewModel\ProdutoViewModel.cs" />  <!-- Exemplo: sua classe de produto -->
   </ItemGroup>
 

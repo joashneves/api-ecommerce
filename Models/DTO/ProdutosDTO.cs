@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 
-namespace Models.Models
+namespace Model.DTO
 {
-    public class Produto
+    public class ProdutosDTO
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "A descrição é obrigatória")]
@@ -23,17 +19,7 @@ namespace Models.Models
         public string Categoria { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "A quantidade deve ser maior ou igual a zero")]
         public int Quantidade { get; set; } = 0;
-            // Lista de imagens relacionadas
+        // Lista de imagens relacionadas
         public List<ImagemProduto> Imagens { get; set; } = new();
-                // Datas de controle
-        [Column(TypeName = "timestamp")]
-        public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-
-        [Column(TypeName = "timestamp")]
-        public DateTime UpdatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-
-        [Column(TypeName = "timestamp")]
-        public DateTime? DeletedAt { get; set; } = null;
-
     }
 }

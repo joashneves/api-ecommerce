@@ -15,7 +15,8 @@ namespace Infra
             : base(options)
         {
         }
-        public DbSet<Produto> ProdutoSet { get; set; } // Alterado de ContaSet para ProdutoSet
+        public DbSet<Produto> ProdutoSet { get; set; } 
+        public DbSet<ImagemProduto> ImagemProdutoSet { get; set; }
 
         // Configuração da string de conexão e do banco de dados
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
