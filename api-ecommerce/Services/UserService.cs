@@ -35,7 +35,7 @@ namespace api_ecommerce.Services
             return usuario;
 
         }
-        public async Task<string> LoginAsync(LoginDTO login)
+        public async Task<Object> LoginAsync(LoginDTO login)
         {
             var usuario = await _context.UsuarioSet
                 .FirstOrDefaultAsync(u => u.Nome_usuario == login.Nome_usuario);
@@ -45,8 +45,8 @@ namespace api_ecommerce.Services
                 throw new ArgumentException("Email ou senha inválidos.");
             }
 
-            var token = TokenGeneration.GenerateToken(usuario);
-            return (string)token;
+            return TokenGeneration.GenerateToken(usuario); // já é string
+
         }
 
     }
