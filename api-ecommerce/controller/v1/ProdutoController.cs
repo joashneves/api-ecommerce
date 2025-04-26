@@ -1,4 +1,5 @@
-﻿using api_ecommerce.Attributes;
+﻿using System.Security.Claims;
+using api_ecommerce.Attributes;
 using api_ecommerce.Services;
 using Asp.Versioning;
 using Infra;
@@ -83,13 +84,79 @@ namespace api_ecommerce.controller.v1
                 return StatusCode(500, new { mensagem = "Erro interno ao salvar produto", erro = ex.Message });
             }
         }
+        [HttpPatch("{id}")]
+        [AutorizarCargo(Cargo.Adm, Cargo.SuperAdm, Cargo.Suporte)]
+        public async Task<IActionResult> PatchProduto(Guid id, [FromBody] Dictionary<string, object> dadosPatch)
+        {
+            try
+            {
+                var usuarioLogado = User.FindFirst(ClaimTypes.Name)?.Value;
+                var cargoLogadoString = User.FindFirst("Cargo")?.Value;
+
+                if (string.IsNullOrEmpty(usuarioLogado) || string.IsNullOrEmpty(cargoLogadoString))
+                    return Unauthorized(new { message = "Token inválido ou expirado." });
+
+                var cargoLogado = Enum.Parse<Cargo>(cargoLogadoString);
+
+                var result = await _produtoService.PatchProdutoAsync(id, dadosPatch, usuarioLogado, cargoLogado);
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPatch("{id}/comprar")]
+        public async Task<IActionResult> ComprarProduto(Guid id, [FromBody] int quantidadeCompra)
+        {
+            try
+            {
+                if (quantidadeCompra <= 0)
+                    return BadRequest(new { message = "A quantidade deve ser maior que zero." });
+
+                var produtoAtualizado = await _produtoService.ComprarProdutoAsync(id, quantidadeCompra);
+                return Ok(produtoAtualizado);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpDelete("{id}")]
         [AutorizarPermissao(Attributes.Permissao.Excluir)]
-        [AutorizarCargo(Cargo.Adm)]
-        public IActionResult DeleteProduto(Guid id)
+        [AutorizarCargo(Cargo.Adm, Cargo.SuperAdm)]
+        public async Task<IActionResult> DeleteProduto(Guid id)
         {
-            // Lógica de exclusão do produto
-            return Ok("Produto excluído.");
+            try
+            {
+                var mensagem = await _produtoService.DeletarOuRestaurarProdutoAsync(id);
+                return Ok(new { message = mensagem });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
     }

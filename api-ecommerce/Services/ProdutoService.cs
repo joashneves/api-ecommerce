@@ -122,8 +122,6 @@ namespace api_ecommerce.Services
                 throw; // relança o erro para tratamento externo
             }
         }
-
-
         public async Task<(byte[] fileBytes, string mimeType, string fileName)> DownloadImageByPath(string path)
         {
             //System.Console.WriteLine(path); Storage\\Produtos\\Produto1.jpg é o caminho, ja que o path pega só o arquivo
@@ -153,6 +151,97 @@ namespace api_ecommerce.Services
             return (fileBytes, mimeType, Path.GetFileName(fullPath));
 
         }
+        public async Task<Produto> PatchProdutoAsync(Guid id, Dictionary<string, object> dadosPatch, string usuarioLogado, Cargo cargoLogado)
+        {
+            var produto = await _context.ProdutoSet
+                .Include(p => p.Imagens) // Se quiser atualizar imagens depois
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (produto == null)
+                throw new ArgumentException("Produto não encontrado.");
+
+            if (cargoLogado != Cargo.Adm && cargoLogado != Cargo.SuperAdm && cargoLogado != Cargo.Suporte)
+                throw new UnauthorizedAccessException("Você não tem permissão para alterar este produto.");
+
+            foreach (var dado in dadosPatch)
+            {
+                var propriedade = dado.Key.ToLower();
+                var valor = dado.Value?.ToString();
+
+                if (valor == null)
+                    continue;
+
+                switch (propriedade)
+                {
+                    case "nome":
+                        produto.Nome = valor;
+                        break;
+                    case "descricao":
+                        produto.Descricao = valor;
+                        break;
+                    case "preco":
+                        if (decimal.TryParse(valor, out var preco))
+                            produto.Preco = preco;
+                        break;
+                    case "categoria":
+                        produto.Categoria = valor;
+                        break;
+                    case "quantidade":
+                        if (int.TryParse(valor, out var quantidade))
+                            produto.Quantidade = quantidade;
+                        break;
+                    // Se quiser tratar imagens no futuro, adicione aqui
+                    default:
+                        // Ignorar campos desconhecidos
+                        break;
+                }
+            }
+
+            produto.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+
+            _context.ProdutoSet.Update(produto);
+            await _context.SaveChangesAsync();
+
+            return produto;
+        }
+        public async Task<Produto> ComprarProdutoAsync(Guid id, int quantidadeCompra)
+        {
+            var produto = await _context.ProdutoSet.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (produto == null)
+                throw new ArgumentException("Produto não encontrado.");
+
+            if (produto.Quantidade < quantidadeCompra)
+                throw new InvalidOperationException("Estoque insuficiente para a compra.");
+
+            produto.Quantidade -= quantidadeCompra;
+            produto.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+
+            _context.ProdutoSet.Update(produto);
+            await _context.SaveChangesAsync();
+
+            return produto;
+        }
+        public async Task<string> DeletarOuRestaurarProdutoAsync(Guid id)
+        {
+            var produto = await _context.ProdutoSet.FirstOrDefaultAsync(p => p.Id == id);
+            if (produto == null)
+                throw new ArgumentException("Produto não encontrado.");
+            if (produto.DeletedAt == null)
+            {
+                // Marca como deletado
+                produto.DeletedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+            }
+            else
+            {
+                // Restaura o produto
+                produto.DeletedAt = null;
+            }
+            _context.ProdutoSet.Update(produto);
+            await _context.SaveChangesAsync();
+            return produto.DeletedAt == null ? "Produto restaurado com sucesso." : "Produto deletado com sucesso.";
+        }
+
         // Método auxiliar para determinar o tipo MIME com base na extensão do arquivo
         private string GetMimeType(string filePath)
         {

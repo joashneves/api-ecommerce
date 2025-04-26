@@ -23,7 +23,6 @@ namespace api_ecommerce.controller.v1
             _userService = contextService;
         }
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var result = await _userService.GetUsuariosAsync();
