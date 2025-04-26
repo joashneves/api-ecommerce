@@ -27,12 +27,16 @@
 
   <!-- Incluir suas classes e arquivos do projeto Infra -->
   <ItemGroup>
+    <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.Designer.cs" />
     <Compile Include="Migrations\20250425221252_ProdutoMigration.cs" />
     <Compile Include="Migrations\20250425221252_ProdutoMigration.Designer.cs" />
     <Compile Include="Migrations\20250425221940_ProdutoMigrationremoveproduto.cs" />
     <Compile Include="Migrations\20250425221940_ProdutoMigrationremoveproduto.Designer.cs" />
+    <Compile Include="Migrations\ApplicationDb\20250426231910_Logmigration.cs" />
+    <Compile Include="Migrations\ApplicationDb\20250426231910_Logmigration.Designer.cs" />
+    <Compile Include="Migrations\ApplicationDb\ApplicationDbContextModelSnapshot.cs" />
     <Compile Include="Migrations\ProdutoContextModelSnapshot.cs" />
     <Compile Include="Migrations\User\20250426132145_ajustseedfixauto.cs" />
     <Compile Include="Migrations\User\20250426132145_ajustseedfixauto.Designer.cs" />

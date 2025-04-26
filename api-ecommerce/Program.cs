@@ -41,6 +41,7 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<LogService>();
 builder.Services.AddScoped<IHealthCheckService, HealthCheckService>();
 
 
@@ -93,7 +94,7 @@ builder.Services.AddSwaggerGen(option =>
 // Para migrations
 builder.Services.AddDbContext<ProdutoContext>();
 builder.Services.AddDbContext<UserContext>();
-
+builder.Services.AddDbContext<ApplicationDbContext>();
 
 var app = builder.Build();
 
@@ -114,6 +115,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseMiddleware<AuthorizationMiddleware>();
+app.UseMiddleware<LogMiddleware>();
 
 app.UseAuthorization();
 
