@@ -9,6 +9,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Models
 {
+    public enum Cargo
+    {
+        SuperAdm = 1,
+        Adm = 2,
+        Comum = 3,
+        Suporte = 4
+    }
+    [Flags] // Adiciona o atributo Flags para permitir combinações de permissões.
+    public enum Permissao
+    {
+        Nenhuma = 0,
+        Criar = 1,
+        Excluir = 2,
+        Atualizar = 4,
+        Ler = 8,
+        GerenciarUsuarios = 16,
+        GerenciarProdutos = 32
+    }
+
     public class Usuario
     {
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -23,7 +42,13 @@ namespace Models.Models
         [EmailAddress(ErrorMessage = "Email inválido")]
         public string Email { get; set; }  
         public string CPF { get; set; }
-                // Datas de controle
+
+        // Definindo padrão: Cargo = Comum
+        public Cargo Cargo { get; set; } = Cargo.Comum;
+
+        // Definindo padrão: Permissão = Ler (ou outras permissões básicas que você quiser)
+        public Permissao Permissoes { get; set; } = Permissao.Ler;
+        // Datas de controle
         [Column(TypeName = "timestamp")]
         public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 

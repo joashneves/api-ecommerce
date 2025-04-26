@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations.User
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20250425221353_UserMigration")]
-    partial class UserMigration
+    [Migration("20250426132145_ajustseedfixauto")]
+    partial class ajustseedfixauto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,9 @@ namespace Infra.Migrations.User
                     b.Property<string>("CPF")
                         .HasColumnType("text");
 
+                    b.Property<int>("Cargo")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp");
 
@@ -58,6 +61,9 @@ namespace Infra.Migrations.User
                         .HasColumnType("character varying(50)")
                         .HasColumnName("nome_usuario");
 
+                    b.Property<int>("Permissoes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Senha")
                         .HasColumnType("text")
                         .HasColumnName("senha");
@@ -68,6 +74,34 @@ namespace Infra.Migrations.User
                     b.HasKey("Id");
 
                     b.ToTable("Usuario", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("4bca7073-6a9e-4825-a218-59635e787148"),
+                            CPF = "00000000000",
+                            Cargo = 1,
+                            CreatedAt = new DateTime(2025, 4, 26, 10, 21, 45, 613, DateTimeKind.Unspecified).AddTicks(4864),
+                            Email = "superadmin@exemplo.com",
+                            Nome_completo = "Super Admin",
+                            Nome_usuario = "superadmin",
+                            Permissoes = 63,
+                            Senha = "$2a$06$qzBEXhEPIkjOSHZcY1u6Cu7gJ88U9.8tGtyS5g1RfKpqg4AWbsk6i",
+                            UpdatedAt = new DateTime(2025, 4, 26, 10, 21, 45, 614, DateTimeKind.Unspecified).AddTicks(8969)
+                        },
+                        new
+                        {
+                            Id = new Guid("457f82ef-d838-48ec-8234-fa9df6249f0c"),
+                            CPF = "11111111111",
+                            Cargo = 3,
+                            CreatedAt = new DateTime(2025, 4, 26, 10, 21, 45, 615, DateTimeKind.Unspecified).AddTicks(88),
+                            Email = "usuario@exemplo.com",
+                            Nome_completo = "Usuário Comum",
+                            Nome_usuario = "usuario",
+                            Permissoes = 8,
+                            Senha = "$2a$06$qzBEXhEPIkjOSHZcY1u6Cu7gJ88U9.8tGtyS5g1RfKpqg4AWbsk6i",
+                            UpdatedAt = new DateTime(2025, 4, 26, 10, 21, 45, 615, DateTimeKind.Unspecified).AddTicks(95)
+                        });
                 });
 #pragma warning restore 612, 618
         }

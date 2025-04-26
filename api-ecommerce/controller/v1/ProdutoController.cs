@@ -1,4 +1,5 @@
-﻿using api_ecommerce.Services;
+﻿using api_ecommerce.Attributes;
+using api_ecommerce.Services;
 using Asp.Versioning;
 using Infra;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +45,8 @@ namespace api_ecommerce.controller.v1
 
         [HttpPost]
         [Consumes("multipart/form-data")]
+        [AutorizarCargo(Cargo.Adm)]
+        [AutorizarPermissao(Attributes.Permissao.Criar)]
         public async Task<IActionResult> Post([FromForm]ProdutoViewModel produto){
             try
             {
@@ -60,6 +63,7 @@ namespace api_ecommerce.controller.v1
             }
         }
         [HttpGet("download/{fileName}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Download(string fileName)
         {
             try
@@ -79,6 +83,14 @@ namespace api_ecommerce.controller.v1
             {
                 return StatusCode(500, new { mensagem = "Erro interno ao realizar o download.", erro = ex.Message });
             }
+        }
+        [HttpDelete("{id}")]
+        [AutorizarPermissao(Attributes.Permissao.Excluir)]
+        [AutorizarCargo(Cargo.Adm)]
+        public IActionResult DeleteProduto(Guid id)
+        {
+            // Lógica de exclusão do produto
+            return Ok("Produto excluído.");
         }
 
     }

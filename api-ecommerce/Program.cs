@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using api_ecommerce.Services.Interfaces;
+using api_ecommerce.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +59,36 @@ builder.Services.AddApiVersioning().AddMvc().AddApiExplorer(setup =>
     setup.GroupNameFormat = "'v'VVV";
     setup.SubstituteApiVersionInUrl = true;
 });
-builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.OperationFilter<SweggerDefaultValue>();
+
+    // CONFIGURAÇÃO DE TOKEN BEARER
+    option.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Digite: Bearer {seu token JWT}"
+    });
+
+    option.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 // Para migrations
 builder.Services.AddDbContext<ProdutoContext>();
@@ -81,6 +111,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<AuthorizationMiddleware>();
 
 app.UseAuthorization();
 

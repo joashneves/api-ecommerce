@@ -16,25 +16,39 @@ namespace api_ecommerce.Services
         {
             return await _context.UsuarioSet.ToListAsync(); // Obtém todos os usuários
         }
-        public async Task<Usuario> PostUsuarioAsync(Usuario usuario)
+        public async Task<Usuario> PostUsuarioAsync(UsuarioDTO usuarioDTO)
         {
             var existingUser = await _context.UsuarioSet
-                .FirstOrDefaultAsync(u => u.Email == usuario.Email || u.Nome_usuario == usuario.Nome_usuario);
+                .FirstOrDefaultAsync(u => u.Email == usuarioDTO.Email || u.Nome_usuario == usuarioDTO.Nome_usuario);
             if (existingUser != null)
             {
                 throw new ArgumentException("Usuário ou email já existe.");
             }
-            // Checar ambiente
+
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var workFactor = environment == "Production" ? 12 : 6;
-            // Hash da senha com salting interno
-            usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha, workFactor);
+
+            var usuario = new Usuario
+            {
+                Id = Guid.NewGuid(), // Agora criado no service
+                Nome_completo = usuarioDTO.Nome_completo,
+                Nome_usuario = usuarioDTO.Nome_usuario,
+                Email = usuarioDTO.Email,
+                CPF = usuarioDTO.CPF,
+                Senha = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Senha, workFactor),
+                Cargo = Cargo.Comum, // ou outro valor padrão
+                Permissoes = Permissao.Ler, // padrão
+                CreatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")),
+                UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time")),
+                DeletedAt = null
+            };
+            System.Console.WriteLine(usuario);
 
             _context.UsuarioSet.Add(usuario);
             await _context.SaveChangesAsync();
             return usuario;
-
         }
+
         public async Task<Object> LoginAsync(LoginDTO login)
         {
             var usuario = await _context.UsuarioSet

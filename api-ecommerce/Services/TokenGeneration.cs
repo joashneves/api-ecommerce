@@ -19,9 +19,11 @@ namespace api_ecommerce.Services
                 {
                 new Claim(ClaimTypes.Name, conta.Nome_usuario),
                 new Claim(ClaimTypes.Email, conta.Email),
-                    
+                new Claim("Cargo", conta.Cargo.ToString()),
+                new Claim("Permissoes", ((int)conta.Permissoes).ToString())
+
             }),
-                Expires = DateTime.UtcNow.AddHours(2), // O token vai expirar em 2 horas
+                Expires = DateTime.UtcNow.AddHours(6), // O token vai expirar em 2 horas
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

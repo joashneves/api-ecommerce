@@ -11,6 +11,7 @@
 
   <!-- Referências para pacotes NuGet -->
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -33,12 +34,13 @@
     <Compile Include="Migrations\20250425221940_ProdutoMigrationremoveproduto.cs" />
     <Compile Include="Migrations\20250425221940_ProdutoMigrationremoveproduto.Designer.cs" />
     <Compile Include="Migrations\ProdutoContextModelSnapshot.cs" />
-    <Compile Include="Migrations\User\20250424235150_userContext.cs" />
-    <Compile Include="Migrations\User\20250424235150_userContext.Designer.cs" />
-    <Compile Include="Migrations\User\20250425221353_UserMigration.cs" />
-    <Compile Include="Migrations\User\20250425221353_UserMigration.Designer.cs" />
+    <Compile Include="Migrations\User\20250426132145_ajustseedfixauto.cs" />
+    <Compile Include="Migrations\User\20250426132145_ajustseedfixauto.Designer.cs" />
+    <Compile Include="Migrations\User\20250426132700_ajustseedfixDATAo.cs" />
+    <Compile Include="Migrations\User\20250426132700_ajustseedfixDATAo.Designer.cs" />
     <Compile Include="Migrations\User\UserContextModelSnapshot.cs" />
     <Compile Include="ProdutoContext.cs" />
+    <Compile Include="Seed\UsuarioSeed.cs" />
     <Compile Include="UserContext.cs" />  <!-- Sua classe ProdutoContext -->
     <!-- Inclua outras classes de repositório ou contexto, se necessário -->
   </ItemGroup>

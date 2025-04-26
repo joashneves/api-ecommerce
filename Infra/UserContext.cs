@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Infra.Seed;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
 
@@ -42,6 +43,8 @@ namespace Infra
                 entity.Property(u => u.Email).HasColumnName("email");
                 entity.Property(u => u.Senha).HasColumnName("senha");
             });
+            modelBuilder.Entity<Usuario>().HasData(UsuarioSeed.SeedUsuarios());
+
         }
     }
 }
