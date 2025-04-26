@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using api_ecommerce.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IHealthCheckService, HealthCheckService>();
+
 
 // Add services to the container.
 builder.Services.AddControllers();

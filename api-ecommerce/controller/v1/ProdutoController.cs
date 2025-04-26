@@ -27,6 +27,20 @@ namespace api_ecommerce.controller.v1
             var result = await _produtoService.GetProdutosAsync(pagina, quantidade);
             return Ok(result);
         }
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                var produto = await _produtoService.GetProdutoByIdAsync(id);
+                return Ok(produto);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
 
         [HttpPost]
         [Consumes("multipart/form-data")]

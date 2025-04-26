@@ -26,6 +26,19 @@ namespace api_ecommerce.Services
                 .Skip(pagina).Take(quantidade)
                 .AsQueryable().ToListAsync();
         }
+        public async Task<Produto> GetProdutoByIdAsync(Guid id)
+        {
+            var produto = await _context.ProdutoSet
+                .Include(p => p.Imagens)
+                .FirstOrDefaultAsync(p => p.Id == id && p.DeletedAt == null);
+
+            if (produto == null)
+            {
+                throw new ArgumentException("Produto não encontrado.");
+            }
+
+            return produto;
+        }
 
         // Método para adicionar um novo produto
         public async Task<Produto> PostProdutoAsync([FromForm] ProdutoViewModel produto)
