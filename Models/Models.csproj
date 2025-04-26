@@ -17,6 +17,7 @@
 
   <!-- Aqui você adiciona as entidades ou modelos que fazem parte deste projeto -->
   <ItemGroup>
+    <Compile Include="DTO\AlterarUsuarioCargosPorAdminDTO.cs" />
     <Compile Include="DTO\LoginDTO.cs" />
     <Compile Include="DTO\ProdutosDTO.cs" />
     <Compile Include="DTO\UsuarioDTO.cs" />

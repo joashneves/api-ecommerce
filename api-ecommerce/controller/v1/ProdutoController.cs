@@ -42,26 +42,6 @@ namespace api_ecommerce.controller.v1
                 return NotFound(ex.Message);
             }
         }
-
-        [HttpPost]
-        [Consumes("multipart/form-data")]
-        [AutorizarCargo(Cargo.Adm, Cargo.SuperAdm)]
-        [AutorizarPermissao(Attributes.Permissao.Criar)]
-        public async Task<IActionResult> Post([FromForm]ProdutoViewModel produto){
-            try
-            {
-                var result = await _produtoService.PostProdutoAsync(produto);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensagem = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { mensagem = "Erro interno ao salvar produto", erro = ex.Message });
-            }
-        }
         [HttpGet("download/{fileName}")]
         [AllowAnonymous]
         public async Task<IActionResult> Download(string fileName)
@@ -82,6 +62,25 @@ namespace api_ecommerce.controller.v1
             catch (Exception ex)
             {
                 return StatusCode(500, new { mensagem = "Erro interno ao realizar o download.", erro = ex.Message });
+            }
+        }
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        [AutorizarCargo(Cargo.Adm, Cargo.SuperAdm)]
+        [AutorizarPermissao(Attributes.Permissao.Criar)]
+        public async Task<IActionResult> Post([FromForm]ProdutoViewModel produto){
+            try
+            {
+                var result = await _produtoService.PostProdutoAsync(produto);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensagem = "Erro interno ao salvar produto", erro = ex.Message });
             }
         }
         [HttpDelete("{id}")]
