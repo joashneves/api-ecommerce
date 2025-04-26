@@ -1,12 +1,14 @@
 ﻿using api_ecommerce.Services;
 using Asp.Versioning;
 using Infra;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModel;
 using Models.Models;
 
 namespace api_ecommerce.controller.v1
 {
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -19,6 +21,7 @@ namespace api_ecommerce.controller.v1
             _produtoService = contextService;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index([FromQuery] int pagina = 0, [FromQuery] int quantidade = 10)
         {
             var result = await _produtoService.GetProdutosAsync(pagina, quantidade);

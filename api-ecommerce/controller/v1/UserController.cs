@@ -2,12 +2,14 @@
 using api_ecommerce.Services;
 using Asp.Versioning;
 using Infra;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Models.Models;
 
 namespace api_ecommerce.controller.v1
 {
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -38,6 +40,7 @@ namespace api_ecommerce.controller.v1
             }
         }
         [HttpPut("auth")]
+        [AllowAnonymous]
         public async Task<IActionResult> Auth([FromBody] LoginDTO login)
         {
             try

@@ -8,6 +8,7 @@ using api_ecommerce.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,6 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
-
 
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<UserService>();
