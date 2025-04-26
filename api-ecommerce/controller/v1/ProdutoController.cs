@@ -45,7 +45,7 @@ namespace api_ecommerce.controller.v1
 
         [HttpPost]
         [Consumes("multipart/form-data")]
-        [AutorizarCargo(Cargo.Adm)]
+        [AutorizarCargo(Cargo.Adm, Cargo.SuperAdm)]
         [AutorizarPermissao(Attributes.Permissao.Criar)]
         public async Task<IActionResult> Post([FromForm]ProdutoViewModel produto){
             try

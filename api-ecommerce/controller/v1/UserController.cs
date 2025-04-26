@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using api_ecommerce.Attributes;
 using api_ecommerce.Services;
 using Asp.Versioning;
 using Infra;
@@ -28,7 +29,8 @@ namespace api_ecommerce.controller.v1
             return Ok(result);
         }
         [HttpPost]
-        [AllowAnonymous]
+        [AutorizarCargo(Cargo.SuperAdm)]
+        [AutorizarPermissao(Attributes.Permissao.GerenciarUsuarios)]
         public async Task<IActionResult> Post([FromBody] UsuarioDTO usuarioDTO)
         {
             try
