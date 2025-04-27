@@ -21,7 +21,12 @@
     <Compile Include="DTO\LoginDTO.cs" />
     <Compile Include="DTO\ProdutosDTO.cs" />
     <Compile Include="DTO\UsuarioDTO.cs" />
+    <Compile Include="Models\Carrinho.cs" />
+    <Compile Include="Models\CarrinhoItem.cs" />
+    <Compile Include="Models\Localizacao.cs" />
     <Compile Include="Models\Log.cs" />
+    <Compile Include="Models\Pedido.cs" />
+    <Compile Include="Models\PedidoProduto.cs" />
     <Compile Include="Models\Usuario.cs" />  <!-- Exemplo: sua classe de usuário -->
     <Compile Include="Models\Produto.cs" />
     <Compile Include="Models\ImagemProduto.cs" />
