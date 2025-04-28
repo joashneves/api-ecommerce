@@ -28,6 +28,7 @@
   <!-- Incluir suas classes e arquivos do projeto Infra -->
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="CarrinhoContext.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.Designer.cs" />
     <Compile Include="Migrations\20250425221252_ProdutoMigration.cs" />
@@ -43,6 +44,7 @@
     <Compile Include="Migrations\User\20250426132700_ajustseedfixDATAo.cs" />
     <Compile Include="Migrations\User\20250426132700_ajustseedfixDATAo.Designer.cs" />
     <Compile Include="Migrations\User\UserContextModelSnapshot.cs" />
+    <Compile Include="PedidoContext.cs" />
     <Compile Include="ProdutoContext.cs" />
     <Compile Include="Seed\UsuarioSeed.cs" />
     <Compile Include="UserContext.cs" />  <!-- Sua classe ProdutoContext -->
