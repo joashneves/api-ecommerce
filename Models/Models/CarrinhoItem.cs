@@ -11,7 +11,7 @@ namespace Model.Models
     public class CarrinhoItem
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public Guid ProdutoId { get; set; }
+        public string ProdutoId { get; set; }
         public Produto Produto { get; set; } // Navegação para o produto
         public int Quantidade { get; set; } = 1;
         public decimal Preco => Produto?.Preco ?? 0; // Preço do produto no carrinho

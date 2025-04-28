@@ -29,6 +29,7 @@
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="CarrinhoContext.cs" />
+    <Compile Include="LocalizacaoContext.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.cs" />
     <Compile Include="Migrations\20250424221507_InitialMigration.Designer.cs" />
     <Compile Include="Migrations\20250425221252_ProdutoMigration.cs" />

@@ -42,8 +42,9 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LogService>();
+builder.Services.AddScoped<LocalizacaoService>();
+builder.Services.AddScoped<CarrinhoService>();
 builder.Services.AddScoped<IHealthCheckService, HealthCheckService>();
-
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -95,10 +96,13 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddDbContext<ProdutoContext>();
 builder.Services.AddDbContext<UserContext>();
 builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddDbContext<LocalizacaoContext>();
+builder.Services.AddDbContext<CarrinhoContext>();
+builder.Services.AddDbContext<PedidoContext>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

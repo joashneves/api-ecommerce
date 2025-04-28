@@ -34,7 +34,7 @@ namespace api_ecommerce.controller.v1
 
         [HttpPost("adicionar/{produtoId}")]
         [Authorize]
-        public async Task<IActionResult> AdicionarAoCarrinho(Guid produtoId, [FromQuery] int quantidade = 1)
+        public async Task<IActionResult> AdicionarAoCarrinho(string produtoId, [FromQuery] int quantidade = 1)
         {
             var usuarioId = User.FindFirst(ClaimTypes.Name)?.Value;
 
@@ -47,7 +47,7 @@ namespace api_ecommerce.controller.v1
 
         [HttpDelete("remover/{produtoId}")]
         [Authorize]
-        public async Task<IActionResult> RemoverDoCarrinho(Guid produtoId)
+        public async Task<IActionResult> RemoverDoCarrinho(string produtoId)
         {
             var usuarioId = User.FindFirst(ClaimTypes.Name)?.Value;
 

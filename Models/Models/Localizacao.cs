@@ -10,6 +10,7 @@ namespace Model.Models
     public class Localizacao
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public string UsuarioId { get; set; }
         public string Endereco { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
