@@ -15,7 +15,7 @@ namespace api_ecommerce.Services
             _produtoContext = produtoContext;
         }
 
-        public async Task<Carrinho> ObterCarrinhoAsync(string usuarioId)
+        public async Task<Carrinho> ObterCarrinhoAsync(Guid usuarioId)
         {
             var carrinho = _context.CarrinhoSet.Include(c => c.Itens)
                 .ThenInclude(i => i.Produto)
@@ -31,7 +31,7 @@ namespace api_ecommerce.Services
             return carrinho;
         }
 
-        public async Task AdicionarAoCarrinhoAsync(string usuarioId, string produtoId, int quantidade)
+        public async Task AdicionarAoCarrinhoAsync(Guid usuarioId, Guid produtoId, int quantidade)
         {
             var carrinho = await ObterCarrinhoAsync(usuarioId);
 
@@ -57,7 +57,7 @@ namespace api_ecommerce.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoverDoCarrinhoAsync(string usuarioId, string produtoId)
+        public async Task RemoverDoCarrinhoAsync(Guid usuarioId, Guid produtoId)
         {
             var carrinho = await ObterCarrinhoAsync(usuarioId);
             var item = carrinho.Itens.FirstOrDefault(i => i.ProdutoId == produtoId);

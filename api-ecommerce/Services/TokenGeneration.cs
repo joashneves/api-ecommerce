@@ -17,6 +17,7 @@ namespace api_ecommerce.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
+                new Claim(ClaimTypes.NameIdentifier, conta.Id.ToString()), // <-- ID aqui
                 new Claim(ClaimTypes.Name, conta.Nome_usuario),
                 new Claim(ClaimTypes.Email, conta.Email),
                 new Claim("Cargo", conta.Cargo.ToString()),

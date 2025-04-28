@@ -10,7 +10,7 @@ namespace Model.Models
     public class Carrinho
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
         public List<CarrinhoItem> Itens { get; set; } = new List<CarrinhoItem>();
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Models
 {
@@ -11,25 +8,30 @@ namespace Model.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public string UsuarioId { get; set; } // Username, Email ou UserId, conforme seu sistema
+        public Guid UsuarioId { get; set; } // Relacionamento com a tabela de usuários
 
         public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
 
         public bool Atendido { get; set; } = false;
 
-        public string Acao { get; set; } = "Compra"; // Ex: "Compra", "Troca", "Reserva", etc
+        public string Acao { get; set; } = "Compra"; // "Compra", "Reserva", etc.
 
-        public Localizacao Localizacao { get; set; } // Ex: endereço, cidade, ou até um produto especial que você cria
+        // Relação com localização
+        public Guid LocalizacaoId { get; set; }
+        public Localizacao Localizacao { get; set; }
 
-        public decimal ValorTotal { get; set; } // Soma do preço dos produtos
+        public decimal ValorTotal { get; set; }
 
+        // Relação com produtos do pedido
         public List<PedidoProduto> Produtos { get; set; } = new List<PedidoProduto>();
-        // Datas de controle
-        [Column(TypeName = "timestamp")]
-        public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
         [Column(TypeName = "timestamp")]
-        public DateTime UpdatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+        public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+            TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+
+        [Column(TypeName = "timestamp")]
+        public DateTime UpdatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+            TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
         [Column(TypeName = "timestamp")]
         public DateTime? DeletedAt { get; set; } = null;
