@@ -20,6 +20,8 @@ Env.Load(); // Adiciona vari�veis de ambiente diretamente
 string? connectionString = Environment.GetEnvironmentVariable("SQLData");
 Console.WriteLine($"SQLData: {connectionString}");
 string? secretKey = Environment.GetEnvironmentVariable("SECRET_KEY"); // Obt�m a chave do .env
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigis";
+
 
 var key = Encoding.ASCII.GetBytes(secretKey);
 builder.Services.AddAuthentication(x =>
@@ -38,6 +40,17 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("*",
+                                              "http://localhost:5173");
+                      });
+});
+
 
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<UserService>();
@@ -115,6 +128,7 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
