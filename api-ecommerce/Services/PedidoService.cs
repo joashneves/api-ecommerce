@@ -6,10 +6,10 @@ namespace api_ecommerce.Services
 {
     public class PedidoService
     {
-        private readonly PedidoContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly CarrinhoService _carrinhoService;
 
-        public PedidoService(PedidoContext context, CarrinhoService carrinhoService)
+        public PedidoService(ApplicationDbContext context, CarrinhoService carrinhoService)
         {
             _context = context;
             _carrinhoService = carrinhoService;

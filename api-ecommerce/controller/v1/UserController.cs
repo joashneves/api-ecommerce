@@ -28,9 +28,8 @@ namespace api_ecommerce.controller.v1
             var result = await _userService.GetUsuariosAsync();
             return Ok(result);
         }
-        [HttpPost]
-        [AutorizarCargo(Cargo.SuperAdm)]
-        [AutorizarPermissao(Attributes.Permissao.GerenciarUsuarios)]
+        [HttpPost("Cadastrar")]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] UsuarioDTO usuarioDTO)
         {
             try

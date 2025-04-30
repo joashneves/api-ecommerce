@@ -6,13 +6,11 @@ namespace api_ecommerce.Services
 {
     public class CarrinhoService
     {
-        private readonly CarrinhoContext _context;
-        private readonly ProdutoContext _produtoContext;
+        private readonly ApplicationDbContext _context;
 
-        public CarrinhoService(CarrinhoContext context, ProdutoContext produtoContext)
+        public CarrinhoService(ApplicationDbContext context)
         {
             _context = context;
-            _produtoContext = produtoContext;
         }
 
         public async Task<Carrinho> ObterCarrinhoAsync(Guid usuarioId)
@@ -43,7 +41,7 @@ namespace api_ecommerce.Services
             }
             else
             {
-                var produto =  await _produtoContext.ProdutoSet.FindAsync(produtoId);
+                var produto =  await _context.ProdutoSet.FindAsync(produtoId);
                 if (produto != null)
                 {
                     carrinho.Itens.Add(new CarrinhoItem

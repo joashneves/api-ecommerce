@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Model.Models;
+using Models.Models;
 
 namespace Infra
 {
@@ -16,6 +17,12 @@ namespace Infra
 
         }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Carrinho> CarrinhoSet { get; set; }
+        public DbSet<Localizacao> LocalizacaoSet { get; set; }
+        public DbSet<Pedido> PedidoSet { get; set; }
+        public DbSet<Usuario> UsuarioSet { get; set; }
+        public DbSet<Produto> ProdutoSet { get; set; }
+        public DbSet<ImagemProduto> ImagemProdutoSet { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = Environment.GetEnvironmentVariable("SQLData");

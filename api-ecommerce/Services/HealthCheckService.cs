@@ -7,18 +7,16 @@ namespace api_ecommerce.Services
 {
     public class HealthCheckService : IHealthCheckService
     {
-        private readonly ProdutoContext _produtosContext;
-        private readonly UserContext _usuariosContext;
-
-        public HealthCheckService(ProdutoContext produtosContext, UserContext usuariosContext)
+        private readonly ApplicationDbContext _context;
+        public HealthCheckService(ApplicationDbContext context)
         {
-            _produtosContext = produtosContext;
-            _usuariosContext = usuariosContext;
+            _context = context;
+            
         }
 
         public async Task<object> GetStatusAsync()
         {
-            await using var conn = _produtosContext.Database.GetDbConnection();
+            await using var conn = _context.Database.GetDbConnection();
             await conn.OpenAsync();
 
             var command = conn.CreateCommand();
@@ -55,8 +53,8 @@ namespace api_ecommerce.Services
         {
             var status = new Dictionary<string, string>
             {
-                ["produtosDb"] = await TestConnection(_produtosContext),
-                ["usuariosDb"] = await TestConnection(_usuariosContext)
+                ["produtosDb"] = await TestConnection(_context),
+                ["usuariosDb"] = await TestConnection(_context)
             };
 
             return status;

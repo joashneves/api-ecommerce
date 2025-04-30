@@ -106,12 +106,8 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 // Para migrations
-builder.Services.AddDbContext<ProdutoContext>();
-builder.Services.AddDbContext<UserContext>();
+
 builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddDbContext<LocalizacaoContext>();
-builder.Services.AddDbContext<CarrinhoContext>();
-builder.Services.AddDbContext<PedidoContext>();
 
 var app = builder.Build();
 

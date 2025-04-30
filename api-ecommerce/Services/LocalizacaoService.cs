@@ -6,9 +6,9 @@ namespace api_ecommerce.Services
 {
     public class LocalizacaoService
     {
-        private readonly LocalizacaoContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LocalizacaoService(LocalizacaoContext context)
+        public LocalizacaoService(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -11,8 +11,8 @@ namespace api_ecommerce.Services
 {
     public class ProdutoService
     {
-        private readonly ProdutoContext _context;
-        public ProdutoService(ProdutoContext context)
+        private readonly ApplicationDbContext _context;
+        public ProdutoService(ApplicationDbContext context)
         {
             _context = context;
         }

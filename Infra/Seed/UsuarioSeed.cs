@@ -20,7 +20,7 @@ namespace Infra.Seed
                     Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     Nome_completo = "Super Admin",
                     Nome_usuario = "superadmin",
-                    Senha = "$2a$06$qzBEXhEPIkjOSHZcY1u6Cu7gJ88U9.8tGtyS5g1RfKpqg4AWbsk6i", // Hash fixo
+                    Senha = "$2a$06$CHoIrYjsCVudXgk7XxOFxe0LrQSMi3MmZ3vZcQwcRATArxz9gcytq", // Hash fixo
                     Email = "superadmin@exemplo.com",
                     CPF = "00000000000",
                     Cargo = Cargo.SuperAdm,
