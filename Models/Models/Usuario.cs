@@ -40,7 +40,9 @@ namespace Models.Models
 
         public string Senha { get; set; }
         [EmailAddress(ErrorMessage = "Email inválido")]
-        public string Email { get; set; }  
+        public string Email { get; set; }
+        [Required(ErrorMessage = "O CPF é obrigatório")]
+        [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}\-\d{2}$", ErrorMessage = "O CPF deve estar no formato 000.000.000-00")]
         public string CPF { get; set; }
 
         // Definindo padrão: Cargo = Comum
