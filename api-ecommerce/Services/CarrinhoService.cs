@@ -17,6 +17,7 @@ namespace api_ecommerce.Services
         {
             var carrinho = _context.CarrinhoSet.Include(c => c.Itens)
                 .ThenInclude(i => i.Produto)
+                .AsTracking() // ← ESSENCIAL
                 .FirstOrDefault(c => c.UsuarioId == usuarioId);
 
             if (carrinho == null)
@@ -41,14 +42,19 @@ namespace api_ecommerce.Services
             }
             else
             {
-                var produto =  await _context.ProdutoSet.FindAsync(produtoId);
+                var produto = _context.ProdutoSet.FirstOrDefault(i => i.Id == produtoId);
                 if (produto != null)
                 {
-                    carrinho.Itens.Add(new CarrinhoItem
+                    var item = new CarrinhoItem
                     {
                         ProdutoId = produtoId,
-                        Quantidade = quantidade
-                    });
+                        Quantidade = quantidade,
+                        Produto = produto // Isso é importante se Preco depende disso
+                    };
+
+                    _context.Entry(item).State = EntityState.Added;
+                    carrinho.Itens.Add(item);
+
                 }
             }
 

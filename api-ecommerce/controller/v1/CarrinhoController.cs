@@ -40,7 +40,7 @@ namespace api_ecommerce.controller.v1
         [Authorize]
         public async Task<IActionResult> AdicionarAoCarrinho(Guid produtoId, [FromQuery] int quantidade = 1)
         {
-            var usuarioIdstring = User.FindFirst(ClaimTypes.Name)?.Value;
+            var usuarioIdstring = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(usuarioIdstring))
                 return Unauthorized("Usuário não autenticado.");
@@ -57,7 +57,7 @@ namespace api_ecommerce.controller.v1
         [Authorize]
         public async Task<IActionResult> RemoverDoCarrinho(Guid produtoId)
         {
-            var usuarioIdString = User.FindFirst(ClaimTypes.Name)?.Value;
+            var usuarioIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(usuarioIdString))
                 return Unauthorized("Usuário não autenticado.");
