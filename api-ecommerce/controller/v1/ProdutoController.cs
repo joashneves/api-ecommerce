@@ -45,14 +45,14 @@ namespace api_ecommerce.controller.v1
         }
         [HttpGet("search")]
         [AllowAnonymous]
-        public async Task<IActionResult> BuscarProdutos([FromQuery] string termo, [FromQuery] int pagina = 0, [FromQuery] int quantidade = 10)
+        public async Task<IActionResult> BuscarProdutos([FromQuery] string q, [FromQuery] int pagina = 0, [FromQuery] int quantidade = 10)
         {
-            if (string.IsNullOrWhiteSpace(termo))
+            if (string.IsNullOrWhiteSpace(q))
             {
                 return BadRequest("O termo de busca não pode estar vazio.");
             }
 
-            var produtos = await _produtoService.BuscarProdutosPorRegexAsync(termo, pagina, quantidade);
+            var produtos = await _produtoService.BuscarProdutosPorRegexAsync(q, pagina, quantidade);
             return Ok(produtos);
         }
 

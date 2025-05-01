@@ -22,17 +22,10 @@ namespace api_ecommerce.Services
         public async Task<List<Produto>> GetProdutosAsync(int pagina = 0, int quantidade = 10)
         {
             if (pagina < 0)
-            {
                 throw new ArgumentException("A página não pode ser menor que zero.");
-            }
-            else if (quantidade >= 30)
-            {
-                throw new ArgumentException("A quantidade não pode ser maior que 30.");
-            }
-            else if (quantidade <= 0)
-            {
-                throw new ArgumentException("A quantidade não pode ser menor ou igual a zero.");
-            }
+            if (quantidade <= 0 || quantidade > 30)
+                throw new ArgumentException("A quantidade deve ser entre 1 e 30.");
+
             return await _context.ProdutoSet
             .Include(p => p.Imagens)
             .Where(p => p.DeletedAt == null)
