@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Infra;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +21,23 @@ namespace api_ecommerce.Services
         // Método para obter todos os produtos
         public async Task<List<Produto>> GetProdutosAsync(int pagina = 0, int quantidade = 10)
         {
+            if (pagina < 0)
+            {
+                throw new ArgumentException("A página não pode ser menor que zero.");
+            }
+            else if (quantidade >= 30)
+            {
+                throw new ArgumentException("A quantidade não pode ser maior que 30.");
+            }
+            else if (quantidade <= 0)
+            {
+                throw new ArgumentException("A quantidade não pode ser menor ou igual a zero.");
+            }
             return await _context.ProdutoSet
-                .Include(p => p.Imagens)
-                .Where(p => p.DeletedAt == null)
-                .Skip(pagina).Take(quantidade)
-                .AsQueryable().ToListAsync();
+            .Include(p => p.Imagens)
+            .Where(p => p.DeletedAt == null)
+            .Skip(pagina).Take(quantidade)
+            .AsQueryable().ToListAsync();
         }
         public async Task<Produto> GetProdutoByIdAsync(Guid id)
         {
@@ -38,6 +51,30 @@ namespace api_ecommerce.Services
             }
 
             return produto;
+        }
+        // Metodo Regex
+        public async Task<List<Produto>> BuscarProdutosPorRegexAsync(string termo, int pagina = 0, int quantidade = 10)
+        {
+            if (pagina < 0)
+                throw new ArgumentException("A página não pode ser menor que zero.");
+            if (quantidade <= 0 || quantidade > 30)
+                throw new ArgumentException("A quantidade deve ser entre 1 e 30.");
+
+            // Consulta inicial no banco (mais leve) — Like/Contains
+            var produtosFiltrados = await _context.ProdutoSet
+                .Include(p => p.Imagens)
+                .Where(p => p.DeletedAt == null &&
+                       (p.Nome.Contains(termo) || p.Descricao.Contains(termo)))
+                .ToListAsync();
+
+            // Aplica regex em memória
+            var regex = new System.Text.RegularExpressions.Regex(termo, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            var resultadosRegex = produtosFiltrados
+                .Where(p => regex.IsMatch(p.Nome) || regex.IsMatch(p.Descricao))
+                .Skip(pagina).Take(quantidade)
+                .ToList();
+
+            return resultadosRegex;
         }
 
         // Método para adicionar um novo produto

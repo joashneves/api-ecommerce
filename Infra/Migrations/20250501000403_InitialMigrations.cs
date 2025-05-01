@@ -3,14 +3,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:pgcrypto", ",,");
+
             migrationBuilder.CreateTable(
                 name: "CarrinhoSet",
                 columns: table => new
@@ -88,14 +93,14 @@ namespace Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsuarioSet",
+                name: "Usuario",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Nome_completo = table.Column<string>(type: "text", nullable: false),
-                    Nome_usuario = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Senha = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    nome_completo = table.Column<string>(type: "text", nullable: false),
+                    nome_usuario = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    senha = table.Column<string>(type: "text", nullable: true),
+                    email = table.Column<string>(type: "text", nullable: true),
                     CPF = table.Column<string>(type: "text", nullable: true),
                     Cargo = table.Column<int>(type: "integer", nullable: false),
                     Permissoes = table.Column<int>(type: "integer", nullable: false),
@@ -105,7 +110,7 @@ namespace Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsuarioSet", x => x.Id);
+                    table.PrimaryKey("PK_Usuario", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,6 +214,15 @@ namespace Infra.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Usuario",
+                columns: new[] { "id", "CPF", "Cargo", "CreatedAt", "DeletedAt", "email", "nome_completo", "nome_usuario", "Permissoes", "senha", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "00000000000", 1, new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified), null, "superadmin@exemplo.com", "Super Admin", "superadmin", 63, "$2a$06$CHoIrYjsCVudXgk7XxOFxe0LrQSMi3MmZ3vZcQwcRATArxz9gcytq", new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), "11111111111", 3, new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified), null, "usuario@exemplo.com", "Usuário Comum", "usuario", 8, "$2a$06$zuBeb8OtvdVc.ji4HoIkOeQcA7A9SObOSfj.QVbiEebHx6KZKIdgO", new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CarrinhoItem_CarrinhoId",
                 table: "CarrinhoItem",
@@ -256,7 +270,7 @@ namespace Infra.Migrations
                 name: "PedidoProduto");
 
             migrationBuilder.DropTable(
-                name: "UsuarioSet");
+                name: "Usuario");
 
             migrationBuilder.DropTable(
                 name: "CarrinhoSet");

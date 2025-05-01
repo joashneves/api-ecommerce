@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250430222414_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250501000403_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,7 @@ namespace Infra.Migrations
                 .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "pgcrypto");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Model.Models.Carrinho", b =>
@@ -295,7 +296,9 @@ namespace Infra.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("CPF")
                         .HasColumnType("text");
@@ -310,29 +313,61 @@ namespace Infra.Migrations
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("Nome_completo")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("nome_completo");
 
                     b.Property<string>("Nome_usuario")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nome_usuario");
 
                     b.Property<int>("Permissoes")
                         .HasColumnType("integer");
 
                     b.Property<string>("Senha")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("senha");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UsuarioSet");
+                    b.ToTable("Usuario", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CPF = "00000000000",
+                            Cargo = 1,
+                            CreatedAt = new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "superadmin@exemplo.com",
+                            Nome_completo = "Super Admin",
+                            Nome_usuario = "superadmin",
+                            Permissoes = 63,
+                            Senha = "$2a$06$CHoIrYjsCVudXgk7XxOFxe0LrQSMi3MmZ3vZcQwcRATArxz9gcytq",
+                            UpdatedAt = new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CPF = "11111111111",
+                            Cargo = 3,
+                            CreatedAt = new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "usuario@exemplo.com",
+                            Nome_completo = "Usuário Comum",
+                            Nome_usuario = "usuario",
+                            Permissoes = 8,
+                            Senha = "$2a$06$zuBeb8OtvdVc.ji4HoIkOeQcA7A9SObOSfj.QVbiEebHx6KZKIdgO",
+                            UpdatedAt = new DateTime(2025, 4, 25, 21, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Model.Models.CarrinhoItem", b =>

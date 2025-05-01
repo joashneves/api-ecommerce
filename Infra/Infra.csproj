@@ -28,8 +28,8 @@
   <!-- Incluir suas classes e arquivos do projeto Infra -->
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
-    <Compile Include="Migrations\20250430222414_InitialMigration.cs" />
-    <Compile Include="Migrations\20250430222414_InitialMigration.Designer.cs" />
+    <Compile Include="Migrations\20250501000403_InitialMigrations.cs" />
+    <Compile Include="Migrations\20250501000403_InitialMigrations.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
     <Compile Include="Seed\UsuarioSeed.cs" />  <!-- Sua classe ProdutoContext -->
     <!-- Inclua outras classes de repositório ou contexto, se necessário -->

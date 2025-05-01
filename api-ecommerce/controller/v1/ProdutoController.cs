@@ -43,6 +43,19 @@ namespace api_ecommerce.controller.v1
                 return NotFound(ex.Message);
             }
         }
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> BuscarProdutos([FromQuery] string termo, [FromQuery] int pagina = 0, [FromQuery] int quantidade = 10)
+        {
+            if (string.IsNullOrWhiteSpace(termo))
+            {
+                return BadRequest("O termo de busca não pode estar vazio.");
+            }
+
+            var produtos = await _produtoService.BuscarProdutosPorRegexAsync(termo, pagina, quantidade);
+            return Ok(produtos);
+        }
+
         [HttpGet("download/{fileName}")]
         [AllowAnonymous]
         public async Task<IActionResult> Download(string fileName)
